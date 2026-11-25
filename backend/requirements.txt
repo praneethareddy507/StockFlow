@@ -1,1 +1,12 @@
-fastapi\nuvicorn[standard]\nsqlalchemy\npsycopg2-binary\nalembic\npydantic-settings\npython-jose[cryptography]\npasslib[bcrypt]\n
+fastapi
+uvicorn
+sqlalchemy
+psycopg[binary]
+python-dotenv
+alembic
+pydantic
+email-validator
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt==4.0.1
+python-multipart

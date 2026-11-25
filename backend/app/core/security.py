@@ -1,12 +1,26 @@
-from passlib.context import CryptContext
-from jose import jwt
+
+import os
+from pathlib import Path
 from datetime import datetime, timedelta, timezone
 
-SECRET_KEY = "stockflow-secret-key-change-later"
+from dotenv import load_dotenv
+from passlib.context import CryptContext
+from jose import jwt
+
+load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY is not configured")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
 
 
 def hash_password(password: str):
@@ -26,8 +40,16 @@ def create_access_token(data: dict):
 
     to_encode.update({"exp": expire})
 
-    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(
+        to_encode,
+        SECRET_KEY,
+        algorithm=ALGORITHM
+    )
 
 
 def decode_access_token(token: str):
-    return jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return jwt.decode(
+        token,
+        SECRET_KEY,
+        algorithms=[ALGORITHM]
+    )
